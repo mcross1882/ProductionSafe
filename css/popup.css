@@ -1,0 +1,48 @@
+
+.popup-wrap {
+  width: 300px;
+}
+
+.popup-wrap .site-list {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.popup-wrap .site-list .entry {
+  margin: 0.5em 0px;
+}
+
+.popup-wrap .site-list .entry input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  width: 63%;
+  margin-right: 0.25em;
+}
+
+.popup-wrap .settings {
+  padding: 0px 0px 1em 0px;
+}
+
+.popup-wrap .btn-group {
+  text-align: center;
+}
+
+.popup-wrap .btn {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+  box-shadow: inset 0 0 0px #FFFFF;
+  transition: all 0.5s ease;
+}
+
+.popup-wrap .btn:hover {
+  background-color: #EFEFEF;
+}
+
+.popup-wrap .site-list .entry input:focus,
+.popup-wrap .site-list .entry .btn:focus,
+.popup-wrap .site-list .entry .btn:active {
+  border: 1px solid #ccc;
+  box-shadow: inset 0 0 5px #74E2E8;
+}
