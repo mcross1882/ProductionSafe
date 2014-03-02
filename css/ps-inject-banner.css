@@ -23,7 +23,7 @@
 }
 
 .production-safe-banner-wrapper .border-wrapper {
-  padding: 2em 0px;
+  padding: 2em;
 
   border-top: 1px dashed #fff;
   border-bottom: 1px dashed #fff;
@@ -34,6 +34,7 @@
   letter-spacing: 2px;
   text-align: center;
   text-shadow: 2px 2px 3px #303030;
+  line-height: 1.75em;
 }
 
 .production-safe-banner-wrapper .border-wrapper .close {

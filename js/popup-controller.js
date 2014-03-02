@@ -1,110 +1,129 @@
 
-var PopupController = function() {
-  this.enabled = true;
-  this.siteList = [];
-}
+(function($) {
 
-PopupController.prototype.start = function() {
-  this.loadSites();
-  this.registerEvents();
-}
+  var PopupController = function() {
+    this.enabled = true;
+    this.siteList = [];
+  }
 
-PopupController.prototype.registerEvents = function() {
-  var that = this;
-  document.querySelector(".enabled").addEventListener("change", function(event) {
-    event.preventDefault();
-    that.switchEnabled(this.checked);
-  });
+  PopupController.prototype.start = function() {
+    this.loadSites();
+    this.registerEvents();
+  }
 
-  document.querySelector(".btn.add").addEventListener("click", function(event) {
-    event.preventDefault();
-    that.addSite();
-  });
+  PopupController.prototype.registerEvents = function() {
+    var that = this;
+    $(".enabled").on("change", function(event) {
+      that.switchEnabled(this.checked);
+    });
 
-  document.querySelector(".btn.save").addEventListener("click", function(event) {
-    event.preventDefault();
-    that.saveSites();
-  });
-}
+    $(".action.add").click(function(event) {
+      event.preventDefault();
+      that.addSite();
+    });
 
-PopupController.prototype.switchEnabled = function(isEnabled) {
-  this.isEnabled = isEnabled;
-  chrome.storage.local.set({ enabled: this.isEnabled }, function() {
-    console.log("Saved enabled state");
-  });
-}
+    $(".action.dismiss").click(function(event) {
+      event.preventDefault();
+      window.close();
+    });
+  }
 
-PopupController.prototype.loadSites = function() {
-  var that = this;
-  chrome.storage.local.get(["productionSites", "enabled"], function(obj) {
-      this.enabled = obj.enabled;
-      this.siteList = obj.productionSites || [];
+  PopupController.prototype.switchEnabled = function(isEnabled) {
+    this.isEnabled = isEnabled;
+    chrome.storage.local.set({ enabled: this.isEnabled }, function() {
+      console.log("Saved enabled state");
+    });
+  }
 
-      if (this.enabled === true) {
-        document.querySelector(".enabled").setAttribute("checked", "checked");
-      } else {
-        document.querySelector(".enabled").removeAttribute("checked");
+  PopupController.prototype.loadSites = function() {
+    var that = this;
+    chrome.storage.local.get(["productionSites", "enabled"], function(obj) {
+        this.enabled = obj.enabled;
+        this.siteList = obj.productionSites || [];
+
+        if (this.enabled === true) {
+          $(".enabled").attr("checked", "checked");
+        } else {
+          $(".enabled").removeAttribute("checked");
+        }
+
+        for (var i in this.siteList) {
+          that.addSite(this.siteList[i]);
+        }
+    });
+  }
+
+  PopupController.prototype.saveSites = function() {
+    var urlId = false;
+    var that = this;
+    this.siteList = [];
+    
+    $(".site-url").each(function() {
+      urlId = Number($(this).data("id"));
+      if (!isNaN(urlId)) {
+        that.siteList.push({ id: urlId, url: $(this).val() });
       }
+    });
+    
+    chrome.storage.local.set({ productionSites: this.siteList, enabled: this.enabled }, function() {
+      console.log("Saved production sites");
+    });
+  }
 
-      for (var i in this.siteList) {
-        that.addSite(this.siteList[i]);
-      }
-  });
-}
+  PopupController.prototype.addSite = function(siteUrl) {
+    $(".site-list").append(this.buildSiteRow(siteUrl));
+  }
 
-PopupController.prototype.saveSites = function() {
-  var elements = document.getElementsByClassName("site");
-  this.siteList = [];
-  for (var i in elements) {
-    if (typeof elements[i] == 'object' && elements[i].getAttribute) {
-      this.siteList.push({ id: elements[i].getAttribute("data-id"), url: elements[i].value });
+  PopupController.prototype.removeSite = function(event) {
+    event.preventDefault();
+    var elem = this.parentNode.parentNode.parentNode;
+    elem = elem.parentNode.removeChild(elem);
+  }
+
+  PopupController.prototype.buildSiteRow = function(site) {
+    var row = $("<li>");
+    row.addClass("list-group-item site");
+    row.append(this.buildInputGroup(site));
+
+    return row;
+  }
+
+  PopupController.prototype.buildInputGroup = function(site) {
+    var input = $("<input>");
+    input.attr("type", "text");
+    input.attr("class", "form-control site-url");
+    if (site) {
+      input.attr("data-id", site.id);
+      input.val(site.url);
+    } else {
+      input.attr("data-id", this.siteList.length + 1);
+      input.attr("placeholder", "http://example.com");
     }
+    input.focusout($.proxy(this.saveSites, this));
+    
+    var glyphicon = $("<i>");
+    glyphicon.addClass("glyphicon glyphicon-remove");
+    
+    var button = $("<a>");
+    button.attr("class", "input-group-addon action remove");
+    button.append(glyphicon);
+    button.click(this.removeSite);
+    
+    var buttonGroup = $("<div>");
+    buttonGroup.addClass("input-group-btn");
+    buttonGroup.append(button);
+    
+    var group = $("<div>");
+    group.addClass("input-group");
+    group.append(input);
+    group.append(button);
+    
+    return group;
   }
 
-  chrome.storage.local.set({ productionSites: this.siteList, enabled: this.enabled }, function() {
-    console.log("Saved production sites");
+  document.addEventListener('DOMContentLoaded', function(event) {
+    var controller = new PopupController();
+    controller.start();
   });
-}
 
-PopupController.prototype.addSite = function(siteUrl) {
-  document.querySelector(".site-list").appendChild(this.buildSiteRow(siteUrl));
-}
-
-PopupController.prototype.removeSite = function(event) {
-  event.preventDefault();
-
-  var elem = this.parentNode;
-  elem = elem.parentNode.removeChild(elem);
-}
-
-PopupController.prototype.buildSiteRow = function(site) {
-  var input = document.createElement("input");
-  input.setAttribute("type", "text");
-  input.setAttribute("class", "site");
-  if (site) {
-    input.setAttribute("data-id", site.id);
-    input.value = site.url;
-  } else {
-    input.setAttribute("data-id", this.siteList.length + 1);
-    input.setAttribute("placeholder", "http://example.com");
-  }
-
-  var button = document.createElement("button");
-  button.setAttribute("type", "button");
-  button.setAttribute("class", "btn remove");
-  button.innerHTML = "Remove";
-  button.addEventListener('click', this.removeSite);
-
-  var row = document.createElement("div");
-  row.setAttribute("class", "entry");
-
-  row.appendChild(input);
-  row.appendChild(button);
-
-  return row;
-}
-
-document.addEventListener('DOMContentLoaded', function(event) {
-  var controller = new PopupController();
-  controller.start();
-});
+})(window.jQuery);

@@ -1,48 +1,53 @@
 
-.popup-wrap {
-  width: 300px;
+.panel {
+  margin: 0px;
+  border: 0px;
+  width: 400px;
 }
 
-.popup-wrap .site-list {
-  list-style-type: none;
-  padding: 0px;
+.panel-heading {
+  font-size: 1.5em;
 }
 
-.popup-wrap .site-list .entry {
-  margin: 0.5em 0px;
+.panel input,
+.panel .action {
+  color: #303030;
+  transition: color 0.5s ease;
 }
 
-.popup-wrap .site-list .entry input {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 0.5em 1em;
-  width: 63%;
-  margin-right: 0.25em;
+.panel input:focus,
+.panel input:hover,
+.panel .action:focus,
+.panel .action:hover {
+  color: #6B8FB2;
 }
 
-.popup-wrap .settings {
-  padding: 0px 0px 1em 0px;
+.panel .action.add:hover {
+  color: #33CC33;
 }
 
-.popup-wrap .btn-group {
-  text-align: center;
+.panel .action.remove:hover {
+  color: #E62E00;
 }
 
-.popup-wrap .btn {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 0.5em 1em;
-  box-shadow: inset 0 0 0px #FFFFF;
-  transition: all 0.5s ease;
+.panel .site-list input,
+.panel .site-list .input-group-addon {
+  border: 0px solid #fff;
+  box-shadow: 0px 0px #fff;
+  background: #fff;
+  
+  font-size: 1.25em;
+  font-weight: bold;
+  
 }
 
-.popup-wrap .btn:hover {
-  background-color: #EFEFEF;
+.panel .settings {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  
+  padding: 10px 25px;
 }
 
-.popup-wrap .site-list .entry input:focus,
-.popup-wrap .site-list .entry .btn:focus,
-.popup-wrap .site-list .entry .btn:active {
-  border: 1px solid #ccc;
-  box-shadow: inset 0 0 5px #74E2E8;
+.panel .btn {
+  background-color: transparent;
 }

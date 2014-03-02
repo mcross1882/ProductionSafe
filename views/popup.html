@@ -3,23 +3,33 @@
   <head>
     <title>ProductionSafe Plugin</title>
 
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-min.css" />
     <link rel="stylesheet" type="text/css" href="../css/popup.css" />
 
+    <script type="text/javascript" src="../js/jquery-min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-min.js"></script>
     <script type="text/javascript" src="../js/popup-controller.js"></script>
   </head>
-  <body>
-    <div class="popup-wrap">
-      <h4 class="title">Production Sites</h4>
-
-      <ul class="site-list"></ul>
+  <body class="panel panel-default">
+    <div class="panel-heading">
+      <span class="title">Production Sites</span>
+      
+      <a href="#" class="action add pull-right">
+        <i class="glyphicon glyphicon-plus"></i>
+      </a>
+    </div>
+    
+    <div class="panel-body">
+      <ul class="list-group site-list"></ul>
 
       <div class="settings">
         <input type="checkbox" class="enabled" /> Enable ProductionSafe banners?
       </div>
-
+    </div>
+    
+    <div class="panel-footer text-center">
       <div class="btn-group">
-        <button type="button" class="btn add">Add</button>
-        <button type="button" class="btn save">Save</button>
+        <a href="#" class="action dismiss">Close<a>
       </div>
     </div>
   </body>
