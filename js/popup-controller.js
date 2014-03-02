@@ -111,11 +111,7 @@
       that.removeSite(this);
       that.saveSites();
     });
-    
-    var buttonGroup = $("<div>");
-    buttonGroup.addClass("input-group-btn");
-    buttonGroup.append(button);
-    
+
     var group = $("<div>");
     group.addClass("input-group");
     group.append(input);
