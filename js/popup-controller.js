@@ -60,7 +60,7 @@
     
     $(".site-url").each(function() {
       urlId = Number($(this).data("id"));
-      if (!isNaN(urlId)) {
+      if (!isNaN(urlId) && $(this).val()) {
         that.siteList.push({ id: urlId, url: $(this).val() });
       }
     });
@@ -74,9 +74,8 @@
     $(".site-list").append(this.buildSiteRow(siteUrl));
   }
 
-  PopupController.prototype.removeSite = function(event) {
-    event.preventDefault();
-    var elem = this.parentNode.parentNode.parentNode;
+  PopupController.prototype.removeSite = function(input) {
+    var elem = input.parentNode.parentNode;
     elem = elem.parentNode.removeChild(elem);
   }
 
@@ -89,6 +88,7 @@
   }
 
   PopupController.prototype.buildInputGroup = function(site) {
+    var that = this;
     var input = $("<input>");
     input.attr("type", "text");
     input.attr("class", "form-control site-url");
@@ -107,7 +107,10 @@
     var button = $("<a>");
     button.attr("class", "input-group-addon action remove");
     button.append(glyphicon);
-    button.click(this.removeSite);
+    button.click(function() {
+      that.removeSite(this);
+      that.saveSites();
+    });
     
     var buttonGroup = $("<div>");
     buttonGroup.addClass("input-group-btn");
