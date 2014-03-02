@@ -44,7 +44,7 @@
         if (this.enabled === true) {
           $(".enabled").attr("checked", "checked");
         } else {
-          $(".enabled").removeAttribute("checked");
+          $(".enabled").removeAttr("checked");
         }
 
         for (var i in this.siteList) {
