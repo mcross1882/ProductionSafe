@@ -40,3 +40,16 @@
   float: right;
   color: #303030;
 }
+
+.production-safe-banner-wrapper .btn-timeout {
+    border: 0px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: rgba(255,255,255,0.5);
+    transition: background-color 1s ease;
+}
+
+.production-safe-banner-wrapper .btn-timeout:hover {
+    background-color: rgba(255,255,255,0.75);
+}
+
