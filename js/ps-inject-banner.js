@@ -5,7 +5,13 @@
   }
 
   Injector.prototype.showBanner = function() {
-    document.body.appendChild(this.buildBanner());
+    if (!this.hasBanner()) {
+        document.body.appendChild(this.buildBanner());
+    }
+  }
+
+  Injector.prototype.hasBanner = function() {
+    return null != document.querySelector(".production-safe-banner-wrapper");
   }
 
   Injector.prototype.buildBanner = function() {
